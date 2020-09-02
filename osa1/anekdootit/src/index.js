@@ -4,10 +4,10 @@ import ReactDOM from 'react-dom'
 const App = (props) => {
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
+  const [favorite, setFavorite] = useState(0)
 
   const randomizeAnecdote = () => {
     const randomInxed = Math.floor(Math.random() * anecdotes.length)
-    console.log(randomInxed)
     setSelected(randomInxed)
   }
 
@@ -15,14 +15,24 @@ const App = (props) => {
     const newVotes = [...votes]
     newVotes[index] += 1
     setVotes(newVotes)
+    findFavoriteAnecdote()
+  }
+
+  const findFavoriteAnecdote = () => {
+    const mostVotes = Math.max(...votes)
+    const newFavorite = votes.findIndex((vote) => { return vote === mostVotes })
+    setFavorite(newFavorite)
   }
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <strong>{props.anecdotes[selected]}</strong>
       <p>Number of votes: <span style={{ color: 'magenta'}} >{votes[selected]}</span></p>
       <button onClick={randomizeAnecdote}>Gimme another one!</button>
       <button onClick={() => voteAnecdote(selected)}>Vote!</button>
+      <h2>Most loved anecdote</h2>
+      <p>{props.anecdotes[favorite]}</p>
     </div>
   )
 }
