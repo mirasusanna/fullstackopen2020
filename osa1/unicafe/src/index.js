@@ -43,6 +43,9 @@ const Statistics = (props) => {
       <p>Good {props.good}</p>
       <p>Neutral {props.neutral}</p>
       <p>Bad {props.bad}</p>
+      <p>All {props.good + props.neutral + props.bad}</p>
+      <p>Average {(props.good -props.bad) / (props.good + props.neutral + props.bad)}</p>
+      <p>Positive {props.good / (props.good + props.neutral + props.bad) * 100} %</p>
     </div>
   )
 }
