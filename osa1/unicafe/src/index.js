@@ -45,15 +45,21 @@ const Button = (props) => {
 const Statistics = (props) => {
   if (props.good > 0 || props.neutral > 0 || props.bad > 0) {
     return (
-      <div>
-        <h1>Statistics</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Statistics</th>
+          </tr>
+        </thead>
+        <tbody>
         <StatisticsLine text="Good" value={props.good}/>
         <StatisticsLine text="Neutral" value={props.neutral}/>
         <StatisticsLine text="Bad" value={props.bad}/>
         <StatisticsLine text="All" value={props.good + props.neutral + props.bad}/>
         <StatisticsLine text="Average" value={(props.good - props.bad) / (props.good + props.neutral + props.bad)}/>
         <StatisticsLine text="Positive" value={props.good / (props.good + props.neutral + props.bad) * 100}/>
-      </div>
+        </tbody>
+      </table>
     )
   }
 
@@ -67,7 +73,10 @@ const Statistics = (props) => {
 
 const StatisticsLine = (props) => {
   return (
-    <p>{props.text} {props.value}</p>
+    <tr>
+      <td>{props.text}</td>
+      <td>{props.value}</td>
+    </tr>
   )
 }
 
