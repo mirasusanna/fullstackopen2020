@@ -7,17 +7,37 @@ const App = () => {
   ]) 
   const [ newName, setNewName ] = useState('')
 
+  /**
+   * Adds a new name to phonebook if it does not exist
+   * 
+   * @param {*} event
+   */
   const addName = event => {
     event.preventDefault()
-    const newPerson = {
-      name: newName
+    if (nameExists(newName)) {
+      alert(`${newName} is already added to phonebook and can't be added`)
+    } else {
+      const newPerson = {
+        name: newName
+      }
+      setPersons(persons.concat(newPerson))
     }
-    setPersons(persons.concat(newPerson))
     setNewName('')
   }
 
+  /** Event handler for name */
   const handleNameChange = event => {
     setNewName(event.target.value)
+  }
+
+  /**
+   * Check if name exists in phonebook
+   * 
+   * @param {string} name
+   * @returns {boolean} true if name exists, false otherwise
+   */
+  const nameExists = name => {
+    return persons.find(person => person.name === name) !== undefined
   }
 
   return (
@@ -25,10 +45,13 @@ const App = () => {
       <h2>Phonebook</h2>
       <form onSubmit={addName}>
         <div>
-          name: <input value={newName} onChange={handleNameChange}/>
+          Name: <input value={newName} onChange={handleNameChange}/>
+          {nameExists(newName) &&
+            <i>This name exists in the phonebook.</i>
+          }
         </div>
         <div>
-          <button type="submit">add</button>
+          <button type="submit">Add new</button>
         </div>
       </form>
       <h2>Numbers</h2>
