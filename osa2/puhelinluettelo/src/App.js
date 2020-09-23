@@ -1,12 +1,18 @@
 import React, { useState } from 'react'
-import Person from './Person'
+import AddNewForm from './AddNewForm'
+import Filter from './Filter'
+import People from './People'
 
 const App = () => {
   const [ persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
-  ]) 
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
+  ])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
+  const [ searchTerm, setNewSearchTerm ] = useState('')
 
   /**
    * Adds a new name with phone number to phonebook if the name does not exist yet.
@@ -32,6 +38,17 @@ const App = () => {
     }
   }
 
+  /**
+   * Find people based on name. Case-insensitive
+   * 
+   * @param {string} name
+   * @returns {Object[]} array of people
+   */
+  const findPeople = name => {
+    let people = persons.filter(person => person.name.toLowerCase().includes(name.toLowerCase()))
+    return people
+  }
+
   /** Event handler for name */
   const handleNameChange = event => {
     setNewName(event.target.value)
@@ -40,6 +57,11 @@ const App = () => {
   /** Event handler for phone number */
   const handleNumberChange = event => {
     setNewNumber(event.target.value)
+  }
+
+  /** Event handler for search term */
+  const handleSearchTermChange = event => {
+    setNewSearchTerm(event.target.value)
   }
 
   /**
@@ -54,25 +76,23 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
-      <form onSubmit={addName}>
-        <div>
-          Name: <input value={newName} onChange={handleNameChange}/>
-          {nameExists(newName) &&
-            <i>This name exists in the phonebook.</i>
-          }
-        </div>
-        <div>
-          Number: <input value={newNumber} onChange={handleNumberChange}/>
-        </div>
-        <div>
-          <button type="submit">Add new</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-        {persons.map(person =>
-          <Person key={person.name} name={person.name} number={person.number} />
-        )}
+      <h1>Phonebook</h1>
+      <Filter
+        searchTerm={searchTerm}
+        handleSearchTermChange={handleSearchTermChange}
+      />
+      <AddNewForm
+        newName={newName}
+        addName={addName}
+        handleNameChange={handleNameChange}
+        nameExists={nameExists}
+        newNumber={newNumber}
+        handleNumberChange={handleNumberChange}
+      />
+      <People
+        persons={findPeople(searchTerm)}
+        message='No people found'
+      />
     </div>
   )
 }
