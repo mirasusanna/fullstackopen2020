@@ -6,28 +6,40 @@ const App = () => {
     { name: 'Arto Hellas' }
   ]) 
   const [ newName, setNewName ] = useState('')
+  const [ newNumber, setNewNumber ] = useState('')
 
   /**
-   * Adds a new name to phonebook if it does not exist
+   * Adds a new name with phone number to phonebook if the name does not exist yet.
    * 
    * @param {*} event
    */
   const addName = event => {
     event.preventDefault()
-    if (nameExists(newName)) {
-      alert(`${newName} is already added to phonebook and can't be added`)
-    } else {
-      const newPerson = {
-        name: newName
+    if (newName.length > 0 && newNumber.length > 0) {
+      if (nameExists(newName)) {
+        alert(`${newName} is already added to phonebook and can't be added`)
+      } else {
+        const newPerson = {
+          name: newName,
+          number: newNumber
+        }
+        setPersons(persons.concat(newPerson))
+        setNewName('')
+        setNewNumber('')
       }
-      setPersons(persons.concat(newPerson))
+    } else {
+      alert('Please provide a valid name and number.')
     }
-    setNewName('')
   }
 
   /** Event handler for name */
   const handleNameChange = event => {
     setNewName(event.target.value)
+  }
+
+  /** Event handler for phone number */
+  const handleNumberChange = event => {
+    setNewNumber(event.target.value)
   }
 
   /**
@@ -51,11 +63,16 @@ const App = () => {
           }
         </div>
         <div>
+          Number: <input value={newNumber} onChange={handleNumberChange}/>
+        </div>
+        <div>
           <button type="submit">Add new</button>
         </div>
       </form>
       <h2>Numbers</h2>
-       {persons.map(person => <Person key={person.name} name={person.name} /> )}
+        {persons.map(person =>
+          <Person key={person.name} name={person.name} number={person.number} />
+        )}
     </div>
   )
 }
