@@ -10,7 +10,7 @@ const App = () => {
   /** Fetch all countries from restcountries.eu */
   useEffect(() => {
     axios.get('https://restcountries.eu/rest/v2/all').then(response => setCountries(response.data))
-  })
+  }, [])
 
   /** Event handler for search term */
   const handleSearchTermChange = event => {
